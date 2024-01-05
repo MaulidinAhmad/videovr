@@ -1,18 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>videojs-vr Demo</title>
+    <!-- <link href="../node_modules/video.js/dist/video-js.css" rel="stylesheet" /> -->
+    <link href="https://vjs.zencdn.net/8.9.0/video-js.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/videojs-vr@2.0.0/dist/videojs-vr.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <iframe
-      width="700"
-      height="400"
-      src="examples/360.html"
-      allowfullscreen="true"
-      webkitallowfullscreen="true"
-      mozallowfullscreen="true"
-      allow="gyroscope; accelerometer; xr"
-    ></iframe>
+    <form id="login-form">
+      <input type="text" placeholder="link" id="input-form" />
+      <button type="submit">change</button>
+    </form>
+
+    <video
+      width="640"
+      height="300"
+      id="videojs-vr-player"
+      class="video-js vjs-default-skin"
+      controls
+      playsinline
+      crossorigin="anonymous"
+    >
+      <source
+        src="https://dl-a10b-0859.mypikpak.com/download/?fid=f4eAkTl1EYlGk8-1KxuP5N2ZTQU0pUF8BlwWIzEflfrc27pryk-2rMiHNr2_jin89-R9QMwToLrerY1PNr4_TWDoZzT-vUu_tJ2oJhKlEDU=&from=5&verno=3&prod=1104&expire=1704569864&g=44DF5285EE5824400C3C4B4AE31993EA692DBC09&ui=Y63kP0ZqQdIlvN86&t=0&ms=10400000&th=10400000&f=7887334509&alt=0&fileid=VNVGiE_ldVehfFyA0WSiAyimo1&userid=Y63kP0ZqQdIlvN86&pr=XQPkPvr9WWiIuMvELmrVeoO4VZuysWo8RPZBAvJuH8vCENoUpD5CD8rm3SV7ChXJWC3sKdN4iXs6MxeqNdO6XKExSD0VvZucRvHo2JaEBnvDotJeYb5C8bS1MVUWbXNEntEwtAoVwyxHt_N_bP9ODhFGR2_ltl60AFHnkNYec-_yd9DAfVyzAZqC61LOT09jVAO6I-J_6NzBYv3jNSen14Nox8hyNUnJSEP9tjOO4rAQohNKBtb7jGWTJJ-NLmVXGidkK4RptNVGhAEG1en7e7hF9pHx84aGUPAGwZj51yPwMYU-NKYUf7naO52FKZPZp2rrUY5aSlvr79iEtHh-puKhPT3Q3q9G51lxrojDp75g6Gc0_r1Lv7SdqCYSpRA1&sign=D19D49AB609609B30C1C5D908CFBA0CE"
+        id="source-data"
+        type="video/mp4"
+      />
+    </video>
+    <script src="https://vjs.zencdn.net/8.9.0/video.min.js"></script>
+    <!-- <script src="../node_modules/video.js/dist/video.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-vr@2.0.0/dist/videojs-vr.min.js"></script>
+    <script>
+      (function (window, videojs) {
+        var player = (window.player = videojs("videojs-vr-player", {
+          controlBar: {
+            skipButtons: {
+              forward: 10,
+              backward: 10,
+            },
+          },
+        }));
+        player.mediainfo = player.mediainfo || {};
+        player.mediainfo.projection = "360";
+
+        var vr = (window.vr = player.vr({
+          projection: "360",
+          debug: true,
+          forceCardboard: false,
+        }));
+        console.log(player);
+      })(window, window.videojs);
+    </script>
+    <script>
+      let loginForm = document.getElementById("login-form");
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        let input = document.getElementById("input-form");
+
+        if (window.player) {
+          window.player.src({
+            type: "video/mp4",
+            src: input.value,
+          });
+          console.log(window.player, "player");
+        }
+
+        console.log(input.value);
+      });
+    </script>
   </body>
 </html>
