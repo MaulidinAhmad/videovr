@@ -44,7 +44,7 @@
     "prepublishOnly": "npm-run-all build-prod && vjsverify --skip-require --verbose --skip-syntax",
     "start": "npm-run-all -p server watch",
     "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch",
-    "test": "",
+    "test": "npm run build-test && karma start scripts/karma.conf.js",
     "posttest": "shx cat test/dist/coverage/text.txt",
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
