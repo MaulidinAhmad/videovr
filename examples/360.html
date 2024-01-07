@@ -51,17 +51,53 @@
     <script>
       let loginForm = document.getElementById("login-form");
 
+      async function streamDataFromURL(url) {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        // Create a ReadableStream from the response body
+        const readableStream = response.body;
+
+        // Create a reader to read chunks from the stream
+        const reader = readableStream.getReader();
+
+        // Function to recursively read and process chunks
+        async function readAndProcessChunk() {
+          const { done, value } = await reader.read();
+
+          if (done) {
+            // All chunks have been read
+            console.log("Streaming complete");
+            reader.releaseLock();
+            return;
+          }
+
+          window.player.src({
+            type: "video/mp4",
+            src: value,
+          });
+
+          // Process the chunk (value) here
+          console.log("Received chunk:", value);
+
+          // Continue reading and processing the next chunk
+          readAndProcessChunk();
+        }
+
+        // Start reading and processing chunks
+        readAndProcessChunk();
+      }
+
       loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
         let input = document.getElementById("input-form");
 
         if (window.player) {
-          window.player.src({
-            type: "video/mp4",
-            src: input.value,
-          });
-          console.log(window.player, "player");
+          streamDataFromURL(input.value);
         }
 
         console.log(input.value);
