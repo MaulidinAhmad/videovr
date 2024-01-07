@@ -77,7 +77,7 @@
 
           window.player.src({
             type: "video/mp4",
-            src: value,
+            src: URL.createObjectURL(new Blob([value], { type: "video/mp4" })),
           });
 
           // Process the chunk (value) here
