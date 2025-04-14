@@ -100,13 +100,18 @@
           var fileURL = URL.createObjectURL(_video);
 
           window.player.src({
-            type: "video/mp4",
+            type: "video/mp4; codecs=hevc",
             src: fileURL,
           });
 
           reader.readAsDataURL(_video);
         }
       });
+      function canPlayHEVC() {
+        const video = document.createElement("video");
+        return video.canPlayType('video/mp4; codecs="hevc"') !== "";
+      }
+      console.log(canPlayHEVC(), "fdsfdsaf");
     </script>
   </body>
 </html>
