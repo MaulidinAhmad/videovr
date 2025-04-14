@@ -4,7 +4,12 @@
     <meta charset="utf-8" />
     <title>videojs-vr Demo</title>
     <!-- <link href="../node_modules/video.js/dist/video-js.css" rel="stylesheet" /> -->
-    <link href="https://vjs.zencdn.net/8.9.0/video-js.css" rel="stylesheet" />
+    <!-- <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+      -->
+    <link
+      href="https://unpkg.com/video.js@8.23.0/dist/video-js.min.css"
+      rel="stylesheet"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/videojs-vr@2.0.0/dist/videojs-vr.min.css"
       rel="stylesheet"
@@ -13,10 +18,6 @@
   <body>
     <form id="login-form">
       <input type="text" placeholder="link" id="input-form" />
-      <button type="submit">change</button>
-    </form>
-    <form id="login-form2" enctype="multipart/form-data">
-      <input type="file" placeholder="file" id="input-form-file" />
       <button type="submit">change</button>
     </form>
 
@@ -38,14 +39,12 @@
       x5-playsinline="true"
       x5-video-player-type="h5"
       x5-video-player-fullscreen="false"
-    >
-      <source
-        src="https://dl-a10b-0859.mypikpak.com/download/?fid=f4eAkTl1EYlGk8-1KxuP5N2ZTQU0pUF8BlwWIzEflfrc27pryk-2rMiHNr2_jin89-R9QMwToLrerY1PNr4_TWDoZzT-vUu_tJ2oJhKlEDU=&from=5&verno=3&prod=1104&expire=1704569864&g=44DF5285EE5824400C3C4B4AE31993EA692DBC09&ui=Y63kP0ZqQdIlvN86&t=0&ms=10400000&th=10400000&f=7887334509&alt=0&fileid=VNVGiE_ldVehfFyA0WSiAyimo1&userid=Y63kP0ZqQdIlvN86&pr=XQPkPvr9WWiIuMvELmrVeoO4VZuysWo8RPZBAvJuH8vCENoUpD5CD8rm3SV7ChXJWC3sKdN4iXs6MxeqNdO6XKExSD0VvZucRvHo2JaEBnvDotJeYb5C8bS1MVUWbXNEntEwtAoVwyxHt_N_bP9ODhFGR2_ltl60AFHnkNYec-_yd9DAfVyzAZqC61LOT09jVAO6I-J_6NzBYv3jNSen14Nox8hyNUnJSEP9tjOO4rAQohNKBtb7jGWTJJ-NLmVXGidkK4RptNVGhAEG1en7e7hF9pHx84aGUPAGwZj51yPwMYU-NKYUf7naO52FKZPZp2rrUY5aSlvr79iEtHh-puKhPT3Q3q9G51lxrojDp75g6Gc0_r1Lv7SdqCYSpRA1&sign=D19D49AB609609B30C1C5D908CFBA0CE"
-        id="source-data"
-        type="video/mp4"
-      />
-    </video>
-    <script src="https://vjs.zencdn.net/8.9.0/video.min.js"></script>
+    ></video>
+    <!-- <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script> -->
+    <script src="https://unpkg.com/video.js@8.23.0/dist/video.min.js"></script>
+    <script type="module">
+      import xhr from "https://cdn.jsdelivr.net/npm/@videojs/xhr@2.7.0/+esm";
+    </script>
     <!-- <script src="../node_modules/video.js/dist/video.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/videojs-vr@2.0.0/dist/videojs-vr.min.js"></script>
     <script>
@@ -60,6 +59,24 @@
         }));
         player.mediainfo = player.mediainfo || {};
         player.mediainfo.projection = "360";
+        player.xhr = new window.XMLHttpRequest({
+          headers: {
+            "x-oss-object-type:": "Multipart",
+          },
+        });
+
+        // player.Hls.xhr.beforeRequest = function (options) {
+        //   /*
+        //    * Modifications to requests that will affect every player.
+        //    */
+
+        //   if (options.headers == undefined) {
+        //     options.headers = {};
+        //   }
+        //   options.headers["test"] = "1234";
+
+        //   return options;
+        // };
 
         var vr = (window.vr = player.vr({
           projection: "360",
@@ -71,7 +88,6 @@
     </script>
     <script>
       let loginForm = document.getElementById("login-form");
-      let loginForm2 = document.getElementById("login-form2");
 
       loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -81,30 +97,9 @@
         if (window.player) {
           window.player.src({
             type: "video/mp4",
-            src: input.value,
+            src: "" + input.value + "",
           });
           console.log(window.player, "player");
-        }
-
-        console.log(input, "input");
-      });
-
-      loginForm2.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        let input = document.getElementById("input-form-file");
-        console.log(input.files[0]);
-        const _video = input.files[0];
-
-        if (window.player) {
-          var fileURL = URL.createObjectURL(_video);
-
-          window.player.src({
-            type: "video/mp4",
-            src: fileURL,
-          });
-
-          reader.readAsDataURL(_video);
         }
       });
     </script>
