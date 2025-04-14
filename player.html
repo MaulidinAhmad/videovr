@@ -45,6 +45,8 @@
         }));
         player.mediainfo = player.mediainfo || {};
         player.mediainfo.projection = "360";
+        player.mediainfo.forceCardboard = false;
+        player.mediainfo.motionControls = true;
 
         var vr = (window.vr = player.vr({
           projection: "360",
